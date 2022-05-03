@@ -121,7 +121,7 @@ public class PlayerWeapon : MonoBehaviour
         AudioManager.AMInstance.PlayAudio(_gunBackForceSound);
 
         //when a gun fire than weapon force to opposite side
-        _weaponRD.AddForce(-_weaponRD.transform.right * 2.2f, ForceMode2D.Impulse);           
+        _weaponRD.AddForce(-_weaponRD.transform.right * 2.0f, ForceMode2D.Impulse);           
     }
 
     public void WeaponScreenWidthBound()
