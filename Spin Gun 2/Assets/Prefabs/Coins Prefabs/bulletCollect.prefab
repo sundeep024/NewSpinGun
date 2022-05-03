@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1819785801035789964}
   - component: {fileID: 1819785801035789966}
   - component: {fileID: 1819785801035789967}
+  - component: {fileID: -7364345233571328839}
   m_Layer: 0
   m_Name: bulletCollect
   m_TagString: Bullet
@@ -131,3 +132,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.38564456, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-7364345233571328839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819785801035789963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d852190590e2145aea21cd548db6c307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sglBulletCollectSound: {fileID: 8300000, guid: 585cb6c36c35370468619a710489411d, type: 3}

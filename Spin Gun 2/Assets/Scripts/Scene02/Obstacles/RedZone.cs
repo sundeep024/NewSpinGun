@@ -10,7 +10,7 @@ public class RedZone : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(TagManager.WEAPON))
         {
-            //AudioManager.AMInstance.PlayRedZoneClip();
+            Destroy(gameObject);
             AudioManager.AMInstance.PlayAudio(redZoneClip);
             PlayerWeapon.PWInstance.IncreasedWeaponForce();
             //gameUI.CanvasGameOver();

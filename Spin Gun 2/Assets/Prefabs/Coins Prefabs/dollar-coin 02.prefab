@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2423375142875785142}
   - component: {fileID: 2373013965449682181}
   - component: {fileID: -6280988332827128763}
+  - component: {fileID: 4498288608180178752}
   m_Layer: 0
   m_Name: dollar-coin 02
   m_TagString: Coin
@@ -141,3 +142,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4498288608180178752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2423375142875785141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7f02f4e250c4b8095502594b05c392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _coinCollectSound: {fileID: 8300000, guid: 585cb6c36c35370468619a710489411d, type: 3}

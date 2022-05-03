@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class BorderDestroyer : MonoBehaviour
 {
-    public GameModeManager gameMode;
     public UIManager gameUI;
+    [SerializeField] private AudioClip _gameOverSound; 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag(TagManager.WEAPON))
         {
-            AudioManager.AMInstance.PlayGameOverClip();
+            AudioManager.AMInstance.PlayAudio(_gameOverSound);
             gameUI.CanvasGameOver();
             Debug.Log("GameOver...");
             Debug.Log("Weapon Destroyed...");
-            gameMode.selectedMode = GameMode.Over;
+            GameModeManager.selectedMode = GameMode.Over;
         }
     }
 }

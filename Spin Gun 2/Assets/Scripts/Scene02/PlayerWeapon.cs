@@ -22,21 +22,21 @@ public class PlayerWeapon : MonoBehaviour
 
 
     //Game Score  and Bullet count Variables...
-    public int BULLETCOUNT;
-    public int SCORE;
+    public static int BULLETCOUNT;
+    public static int SCORE;
     
 
     public Transform weaponRightPosition;
     public Transform weaponLeftPosition;
 
-    public GameModeManager gameMode;
     public UIManager gameUI;
     //Vector2 screenBounds; 
 
     float posX = 2.3f;
 
     [Header("AudioClip")]
-    [SerializeField] private AudioClip redZoneClip;
+    [SerializeField] private AudioClip _gunFireSound;
+    [SerializeField] private AudioClip _gunBackForceSound;
 
     public static PlayerWeapon PWInstance { get; private set; }
 
@@ -57,8 +57,9 @@ public class PlayerWeapon : MonoBehaviour
     {
         //BULLETCOUNT = 20;
         _muzzleFlash.SetActive(false);
+        //GameModeManager.OnGameShoot += WeaponShooting;
     }
-    
+   
     private void Update()
     {
         //When User tounch on screen or press mouse button
@@ -68,8 +69,6 @@ public class PlayerWeapon : MonoBehaviour
             {
                 BULLETCOUNT = 0;
                 Debug.Log("GameOver..");
-
-                //gameMode.selectedMode = GameMode.Over;
             }
             else
             {
@@ -80,12 +79,15 @@ public class PlayerWeapon : MonoBehaviour
 
         //WeaponForce();  // weapon force to opposite side when user fire
     }
-    
-   
+
+
     public void GunShoot()
-    {            
-        //AudioManager.PlayGunFireClip(); // play sound when fire
-        AudioManager.AMInstance.PlayGunFireClip();
+    {
+        //GunRotation();
+        StartCoroutine(GunRotation());
+
+        // play sound when fire
+        AudioManager.AMInstance.PlayAudio(_gunFireSound);
 
         //bullet instantiate, set bullet position and rotation of bullet 
         Rigidbody2D bulletRD = Instantiate(_bullet, _SpawnPoint.position, Quaternion.identity);
@@ -95,7 +97,6 @@ public class PlayerWeapon : MonoBehaviour
         //bullet fire on right side of gun point and force
         bulletRD.AddForce(_SpawnPoint.right * _bulletForce, ForceMode2D.Impulse);
 
-       // _weaponRD.AddTorque(rotateSpeed, ForceMode2D.Force);
         //Instantiate bullet set patent  
         bulletRD.transform.SetParent(_spawnHolder.transform);
 
@@ -111,13 +112,16 @@ public class PlayerWeapon : MonoBehaviour
         BULLETCOUNT--;
         GamePlayCanvas.GPCInstance.GameBullet(BULLETCOUNT);
         //ScoreManager.SMInstance.GameBullet(BULLETCOUNT);
+
+        StopCoroutine(GunRotation());
     }
 
     public void WeaponForce()
     {
-        AudioManager.AMInstance.PlayGunBackForceClip();
+        AudioManager.AMInstance.PlayAudio(_gunBackForceSound);
+
         //when a gun fire than weapon force to opposite side
-        _weaponRD.AddForce(-_weaponRD.transform.right * 1f, ForceMode2D.Impulse);           
+        _weaponRD.AddForce(-_weaponRD.transform.right * 2.2f, ForceMode2D.Impulse);           
     }
 
     public void WeaponScreenWidthBound()
@@ -148,14 +152,21 @@ public class PlayerWeapon : MonoBehaviour
         isFlashing = false;
     }
 
-    /*
-    public void GunRotation()
+    public IEnumerator GunRotation()
+    {
+        _weaponRD.AddTorque(5.0f, ForceMode2D.Force);//, ForceMode2D.Impulse);
+        yield return null;
+    }
+     
+    /*public void GunRotation()
     {
         //float h = Input.GetAxis("Mouse X")* torque * Time.deltaTime;
         //_weaponRD.AddTorque(torque , ForceMode2D.Force);
-        Vector2 up = Vector2.up;
-        _weaponRD.AddTorque(-Input.GetAxis("Mouse X") * torque * up)
-    }*/
+        //Vector2 up = Vector2.up;
+        _weaponRD.AddTorque(torque * 0.2f, ForceMode2D.Impulse);
+    }
+    */
+
     
     IEnumerator GunRotate()
     {
@@ -167,56 +178,10 @@ public class PlayerWeapon : MonoBehaviour
          }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {        
-        if (collision.gameObject.CompareTag(TagManager.BULLET))  // weapon collect bullet increase score plus 5
-        {
-            AudioManager.AMInstance.PlayGunPickUpClip();
-            BULLETCOUNT = BULLETCOUNT + 5;
-            GamePlayCanvas.GPCInstance.GameBullet(BULLETCOUNT);
-
-            //ScoreManager.SMInstance.GameBullet(BULLETCOUNT);
-            Debug.Log("bullet is " + BULLETCOUNT);
-            Destroy(collision.gameObject);
-        }
-        else if (collision.gameObject.CompareTag(TagManager.INCREASE_BULLET))  // weapon collect multibullet increase score plus 10
-        {
-            AudioManager.AMInstance.PlayGunPickUpClip();
-            BULLETCOUNT = BULLETCOUNT + 10;
-            GamePlayCanvas.GPCInstance.GameBullet(BULLETCOUNT);
-
-            //ScoreManager.SMInstance.GameBullet(BULLETCOUNT);
-            Debug.Log("multi buleet is " + BULLETCOUNT);
-            Destroy(collision.gameObject);
-        }
-        else if (collision.gameObject.CompareTag(TagManager.COIN_COLLECTOR))   // weapon collect coin increase score plus 5
-        {
-            Destroy(collision.gameObject);
-            SCORE = SCORE + 5;            
-
-            GameModeManager.OnScoreChange?.Invoke(SCORE);
-            Debug.Log("Upfate Collision Score .." + SCORE);
-            //GameOverCanvas.GOCInstance.UpdateScore(SCORE);
-            Debug.Log("Subscribed OnScoreChange Action");
-            GamePlayCanvas.GPCInstance.GameScore(SCORE);
-            AudioManager.AMInstance.PlayCoinCollectClip();
-            Debug.Log("Score is " + SCORE);
-        }
-        else if(collision.gameObject.CompareTag(TagManager.RED_ZONE))
-        {
-            //AudioManager.AMInstance.PlayRedZoneClip();
-            AudioManager.AMInstance.PlayAudio(redZoneClip);
-            IncreasedWeaponForce();
-            Debug.Log("Weapon collide with RedZone");
-            Destroy(collision.gameObject);
-        }       
-
-    }
 
     public void IncreasedWeaponForce()
     {
         _weaponRD.AddForce(-_weaponRD.transform.right * 2.2f, ForceMode2D.Impulse);
     }
 
-    
 }

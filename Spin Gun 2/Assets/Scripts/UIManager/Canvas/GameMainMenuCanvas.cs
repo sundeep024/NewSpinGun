@@ -4,10 +4,11 @@ using UnityEditor;
 
 public class GameMainMenuCanvas : MonoBehaviour
 {
-    public GameModeManager gameMode;
     public Button btnPlay;
     public Button btnQuit;
     public UIManager gameUI;
+
+    [SerializeField] private AudioClip _btnClickSound;
 
     // Start is called before the first frame update
     void Start()
@@ -26,9 +27,9 @@ public class GameMainMenuCanvas : MonoBehaviour
             gameMode.OnGamePlay();
         }*/
 
-        AudioManager.AMInstance.PlayButtonClickClip();
-        gameMode.OnGamePlay?.Invoke();
-        gameMode.selectedMode = GameMode.Play;
+        AudioManager.AMInstance.PlayAudio(_btnClickSound);
+        GameModeManager.OnGamePlay?.Invoke();
+        GameModeManager.selectedMode = GameMode.Play;
         gameUI.CanvasGamePlay();
         //PlayerWeapon.WRBInstance.WeaponMovement();
         //PlayerWeapon.WRBInstance.StartCoroutine("WeaponMove");
@@ -39,7 +40,7 @@ public class GameMainMenuCanvas : MonoBehaviour
 
     public void GameQuit()
     {
-        AudioManager.AMInstance.PlayButtonClickClip();
+        AudioManager.AMInstance.PlayAudio(_btnClickSound);
         Application.Quit();
         ShowExitDialogueBox();
     }

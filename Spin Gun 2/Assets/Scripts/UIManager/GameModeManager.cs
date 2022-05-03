@@ -5,15 +5,17 @@ public enum GameMode
 {
     MainMenu,
     Play,
+    shoot,
     Over
 }
 
 public class GameModeManager : MonoBehaviour
 {
-    public GameMode selectedMode = GameMode.MainMenu;
+    public static GameMode selectedMode = GameMode.MainMenu;
 
-    public Action OnGameMainMenu;
-    public Action OnGamePlay;
-    public Action OnGameOver;
+    public static Action OnGameMainMenu;
+    public static Action OnGamePlay;
+    public static Action OnGameOver;
+    public static Action OnGameShoot;
     public static Action<int> OnScoreChange;
 }

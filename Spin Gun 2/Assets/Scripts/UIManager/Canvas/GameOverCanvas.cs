@@ -3,17 +3,17 @@ using UnityEngine.UI;
 
 public class GameOverCanvas : MonoBehaviour
 {
-    public GameModeManager gameMode;
     public UIManager gameUI;
 
     [SerializeField] private Button _btnRestart;
     [SerializeField] private Button _btnMainMenu;
-    public static GameOverCanvas GOCInstance { get; private set; } 
 
     public Text score;
     public Text highscore;
     public int Hscore;
 
+    public static GameOverCanvas GOCInstance { get; private set; } 
+    [SerializeField] private AudioClip _btnClickSound;
 
     private void Awake()
     {
@@ -42,8 +42,8 @@ public class GameOverCanvas : MonoBehaviour
         {
             gameMode.OnGameOver();
         }*/
-        gameMode.OnGameOver?.Invoke();
-        gameMode.selectedMode = GameMode.Over;
+        GameModeManager.OnGameOver?.Invoke();
+        GameModeManager.selectedMode = GameMode.Over;
     }
 
     public void UpdateScore(int Tscore)
@@ -53,15 +53,10 @@ public class GameOverCanvas : MonoBehaviour
         Debug.Log("High Score Update  Value" + score.text);
 
         HighScore(Tscore);
-        //GameModeManager.OnScoreChange -= UpdateScore;
-        //Hscore = score;        
     }
     public void HighScore(int Hscore)
     {
-        //this.score.text = PlayerWeapon.WRBInstance.SCORE.ToString();
         int scoreH = Hscore;
-        //Debug.Log("High Score Value" + scoreH);
-        //this.score.text = scoreH.ToString();
         if (scoreH > PlayerPrefs.GetInt("HScore",0))
         {
             PlayerPrefs.SetInt("HScore",scoreH);
@@ -71,21 +66,23 @@ public class GameOverCanvas : MonoBehaviour
 
     public void MainMenu()
     {
-        AudioManager.AMInstance.PlayButtonClickClip();
+        AudioManager.AMInstance.PlayAudio(_btnClickSound);
         //GameOver();
+        GamePlayCanvas.GPCInstance.score.text = "00";
+        GamePlayCanvas.GPCInstance.bullets.text = "20";
         gameUI.CanvasGameMainMenu();
-        gameMode.selectedMode = GameMode.MainMenu;
+        GameModeManager.selectedMode = GameMode.MainMenu;
     }
 
     public void GameRestart()
     {
         GamePlayCanvas.GPCInstance.score.text = "00";
         GamePlayCanvas.GPCInstance.bullets.text = "20";
-        AudioManager.AMInstance.PlayButtonClickClip();
+        
+        AudioManager.AMInstance.PlayAudio(_btnClickSound);
         PlayerWeapon.PWInstance._weaponRD.position = Vector2.zero;
         gameUI.CanvasGamePlay();
-        gameMode.selectedMode = GameMode.Play;
-        //WeaponRigidBody.WRBInstance._weaponRD.position = weaponPosition.position;
+        GameModeManager.selectedMode = GameMode.Play;
         Debug.Log("GameRestart!..");
     }
     public void OnDisable()

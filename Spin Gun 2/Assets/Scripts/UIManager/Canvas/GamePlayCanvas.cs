@@ -5,8 +5,6 @@ using UnityEditor;
 
 public class GamePlayCanvas : MonoBehaviour
 {
-    public GameModeManager gameMode;
-
     public Button btnHome;
     public Button btnPause;
     public Text bullets;
@@ -39,6 +37,9 @@ public class GamePlayCanvas : MonoBehaviour
         btnHome.onClick.AddListener(MainMenu);
         btnPause.onClick.AddListener(PauseGame);
         //btnPause.onClick.AddListener(GamePause);
+
+
+
     }
 
     public void MainMenu()
