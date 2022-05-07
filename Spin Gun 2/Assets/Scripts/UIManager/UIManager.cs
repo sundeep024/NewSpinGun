@@ -19,7 +19,13 @@ public class UIManager : MonoBehaviour
         GameModeManager.OnGameOver += CanvasGameOver;
         //gameMode.OnGamePause += CanvasGamePause;
     }
-    
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+
+        }
+    }
     public void CanvasGameMainMenu()
     {
         GameMainMenu.enabled = true;

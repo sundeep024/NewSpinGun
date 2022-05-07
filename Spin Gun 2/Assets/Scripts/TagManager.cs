@@ -9,5 +9,5 @@ public static class TagManager
     public static string RED_ZONE = "RedZone";
     public static string BULLET = "Bullet";
     public static string INCREASE_BULLET = "MultiBullet";
-    public static string DESTROYER = "Border";
+    public static string DESTROYER = "Border";    
 }
